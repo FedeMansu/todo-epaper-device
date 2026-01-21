@@ -1,0 +1,117 @@
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100vh;
+    background: #ffffff;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  /* Sidebar Navigation */
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+  }
+  
+  /* Sidebar Links */
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    color: #4a5568;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+  }
+  
+  .sidebar-link:hover {
+    background: #f7fafc;
+    color: #2d3748;
+  }
+  
+  .sidebar-link.active {
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border-left-color: #2b6cb0;
+    font-weight: 500;
+  }
+  
+  /* Icon */
+  .sidebar-link .icon {
+    font-size: 1.25rem;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  
+  /* Label */
+  .sidebar-link .label {
+    font-size: 0.9375rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Scrollbar Styling */
+  .sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .sidebar::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+  }
+  
+  .sidebar::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .sidebar {
+      left: 0;
+    }
+    
+    .sidebar.open {
+      left: 0;
+    }
+  }
+  
+  /* Dark Mode Support (Optional) */
+  @media (prefers-color-scheme: dark) {
+    .sidebar {
+      background: #1a202c;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .sidebar-link {
+      color: #a0aec0;
+    }
+    
+    .sidebar-link:hover {
+      background: #2d3748;
+      color: #e2e8f0;
+    }
+    
+    .sidebar-link.active {
+      background: #2c5282;
+      color: #90cdf4;
+      border-left-color: #90cdf4;
+    }
+  }

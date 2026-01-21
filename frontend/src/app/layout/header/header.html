@@ -1,0 +1,17 @@
+<header class="header" style="height: 95%; width: 100%; background-color: rebeccapurple;">
+    <div class="header-left">
+      <button class="menu-btn" (click)="onMenuClick()">
+        <span class="menu-icon">☰</span>
+      </button>
+      <a routerLink="/" class="logo">MyApp</a>
+    </div>
+    
+    <nav class="header-nav">
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/profile" routerLinkActive="active">Profile</a>
+    </nav>
+    
+    <div class="header-right">
+      <button class="user-menu">Account</button>
+    </div>
+  </header>
