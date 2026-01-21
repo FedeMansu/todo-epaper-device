@@ -1,0 +1,23 @@
+{
+    "name": "todo-epaper-backend",
+    "version": "1.0.0",
+    "description": "Backend per ToDo E-Paper Device",
+    "main": "src/server.js",
+    "type": "module",
+    "scripts": {
+      "start": "node src/server.js",
+      "dev": "nodemon src/server.js"
+    },
+    "keywords": ["todo", "epaper", "api"],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+      "express": "5.1.0",
+      "better-sqlite3": "12.6.2",
+      "cors": "2.8.5",
+      "dotenv": "17.2.3"
+    },
+    "devDependencies": {
+      "nodemon": "3.1.11"
+    }
+  }
