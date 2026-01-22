@@ -1,1 +1,11 @@
-<div>FEdededede</div>
+<h2>Lista Todos</h2>
+    
+@if (loading()) {
+  <p>Caricamento...</p>
+}
+
+@for (todo of todos(); track todo) {
+  <div>{{ todo }}</div>
+}
+
+<button (click)="createTodo()">Aggiungi</button>
