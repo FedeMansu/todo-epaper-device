@@ -1,5 +1,3 @@
-// src/app/models/todo.model.ts
-
 /**
  * Interfaccia per un singolo Todo
  */
@@ -11,22 +9,6 @@ export interface Todo {
   priority?: 'low' | 'medium' | 'high';
   created_at?: string;
   updated_at?: string;
-}
-
-/**
- * Risposta API per la lista di todos
- */
-export interface TodosResponse {
-  success: boolean;
-  data: Todo[];
-}
-
-/**
- * Risposta API per un singolo todo
- */
-export interface TodoResponse {
-  success: boolean;
-  data: Todo;
 }
 
 /**

@@ -1,12 +1,13 @@
 import { Component, computed, signal } from '@angular/core';
 import { TodoService } from '../../services/todo';
-import { formatDate, isCompleted, Todo, TodosResponse } from '../../dtos/todo.dto';
+import { formatDate, isCompleted, Todo } from '../../dtos/todo.dto';
 import { FormsModule } from '@angular/forms';
-import { Grid, GridRow, GridCell, GridCellWidget } from '@angular/aria/grid';
+import { TodoFormComponent } from '../../shared/components/todo-form/todo-form-component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [Grid, GridRow, GridCell, GridCellWidget, FormsModule],
+  imports: [ FormsModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -19,7 +20,7 @@ export class Dashboard {
   isLoading = signal<boolean>(false);
   error = signal<string>('');
 
-  constructor(private readonly service: TodoService) {}
+  constructor(private readonly service: TodoService, private readonly dialog: MatDialog) {}
 
   public ngOnInit(): void {
     this.getData();
@@ -29,9 +30,9 @@ export class Dashboard {
     this.loading.set(true);
 
     this.service.getTodos().subscribe({
-      next: (data: TodosResponse) => {
+      next: (data: Todo[]) => {
         console.log('Dati ricevuti:', data);
-        this.todos.set(data.data);
+        this.todos.set(data);
         this.loading.set(false);
       },
       error: (err) => {
@@ -51,12 +52,15 @@ export class Dashboard {
   }
 
   createTodo(): void {
-    const newTodo: Todo = { id: 1, title: 'Nuovo' };
-
-    this.service.createTodo(newTodo).subscribe({
-      next: (todo: Todo) => {
-        this.todos.update((current) => [...current, todo]);
-      },
+    this.dialog.open(TodoFormComponent, {}).afterClosed().subscribe((result) => {
+      if (result) {
+        const newTodo: Todo = { id: 1, title: result.title };
+        this.service.createTodo(newTodo).subscribe({
+          next: (todo: Todo) => {
+            this.todos.update((current) => [...current, todo]);
+          },
+        });
+      }
     });
   }
 

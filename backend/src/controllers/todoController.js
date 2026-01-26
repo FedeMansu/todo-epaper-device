@@ -5,10 +5,7 @@ export const todoController = {
   getAllTodos(req, res) {
     try {
       const todos = TodoModel.findAll();
-      res.json({
-        success: true,
-        data: todos
-      });
+      res.json({todos});
     } catch (error) {
       console.error('Errore nel recupero dei todos:', error);
       res.status(500).json({
