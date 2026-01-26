@@ -18,6 +18,12 @@ export class SidebarComponent {
 
   menuItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/users', label: 'Users', icon: '👥' },
     { path: '/settings', label: 'Settings', icon: '⚙️' }
   ];
