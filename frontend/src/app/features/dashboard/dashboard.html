@@ -1,11 +1,92 @@
-<h2>Lista Todos</h2>
-    
-@if (loading()) {
-  <p>Caricamento...</p>
-}
+<div class="table-container">
+  <div class="table-header">
+    <h2>My Todos</h2>
+    <button class="btn-primary" (click)="getData()" aria-label="Refresh todos">Refresh</button>
+  </div>
 
-@for (todo of todos(); track todo) {
-  <div>{{ todo }}</div>
-}
+  <table role="table" aria-label="Todo list table" class="todo-table">
+    <thead role="rowgroup">
+      <tr role="row">
+        <th role="columnheader" scope="col">ID</th>
+        <th role="columnheader" scope="col">Title</th>
+        <th role="columnheader" scope="col">Description</th>
+        <th role="columnheader" scope="col">Priority</th>
+        <th role="columnheader" scope="col">Status</th>
+        <th role="columnheader" scope="col">Created</th>
+        <th role="columnheader" scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody role="rowgroup">
+      @if (todos().length === 0) {
+      <tr role="row">
+        <td colspan="7" class="empty-state">No todos found. Create your first todo!</td>
+      </tr>
+      } @for (todo of todos(); track todo.id) {
+      <tr
+        role="row"
+        [class.completed]="isCompleted(todo)"
+        [attr.aria-label]="'Todo: ' + todo.title"
+      >
+        <td role="cell">{{ todo.id }}</td>
+        <td role="cell" class="title-cell">
+          <strong>{{ todo.title }}</strong>
+        </td>
+        <td role="cell" class="description-cell">
+          {{ todo.description || '-' }}
+        </td>
+        <td role="cell">
+          <span
+            class="priority-badge"
+            [class.priority-low]="todo.priority === 'low'"
+            [class.priority-medium]="todo.priority === 'medium'"
+            [class.priority-high]="todo.priority === 'high'"
+            [attr.aria-label]="'Priority: ' + todo.priority"
+          >
+            {{ todo.priority }}
+          </span>
+        </td>
+        <td role="cell">
+          <button
+            class="status-btn"
+            [class.completed]="isCompleted(todo)"
+            (click)="toggleComplete(todo)"
+            [attr.aria-label]="isCompleted(todo) ? 'Mark as incomplete' : 'Mark as complete'"
+            [attr.aria-pressed]="isCompleted(todo)"
+          >
+            {{ isCompleted(todo) ? '✓ Completed' : '○ Pending' }}
+          </button>
+        </td>
+        <td role="cell" class="date-cell">
+          <time [attr.datetime]="todo.created_at">
+            {{ formatDate(todo.created_at!) }}
+          </time>
+        </td>
+        <td role="cell" class="actions-cell">
+          <button
+            class="btn-edit"
+            (click)="editTodo(todo)"
+            [attr.aria-label]="'Edit todo: ' + todo.title"
+          >
+            Edit
+          </button>
+          <button
+            class="btn-delete"
+            (click)="deleteTodo(todo)"
+            [attr.aria-label]="'Delete todo: ' + todo.title"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
 
-<button (click)="createTodo()">Aggiungi</button>
+  @if (isLoading()) {
+  <div class="loading" role="status" aria-live="polite">Loading todos...</div>
+  } @if (error()) {
+  <div class="error" role="alert" aria-live="assertive">
+    {{ error() }}
+  </div>
+  }
+</div>
