@@ -1,17 +1,28 @@
-<header class="header" style="height: 95%; width: 100%; background-color: rebeccapurple;">
-    <div class="header-left">
-      <button class="menu-btn" (click)="onMenuClick()">
-        <span class="menu-icon">☰</span>
-      </button>
-      <a routerLink="/" class="logo">MyApp</a>
-    </div>
-    
-    <nav class="header-nav">
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/profile" routerLinkActive="active">Profile</a>
-    </nav>
-    
-    <div class="header-right">
-      <button class="user-menu">Account</button>
-    </div>
-  </header>
+<header class="w-screen h-16 px-6 bg-slate-800 flex items-center justify-between">
+  <!-- Left -->
+  <div class="flex items-center gap-4">
+    <button class="lg:hidden" (click)="onMenuClick()">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+    <a routerLink="/" class="text-2xl font-bold text-white">Hub</a>
+  </div>
+
+  <!-- Center -->
+  <nav class="hidden md:flex gap-6">
+    <a routerLink="/dashboard" routerLinkActive="text-white" class="text-slate-400">Dashboard</a>
+    <a routerLink="/profile" routerLinkActive="text-white" class="text-slate-400">Profile</a>
+  </nav>
+
+  <!-- Right -->
+  <button class="px-4 py-2 bg-blue-600 text-white rounded">Account</button>
+</header>
+
+<!-- Mobile Menu -->
+<nav class="md:hidden bg-slate-800">
+  <div class="flex flex-col p-4 gap-2">
+    <a routerLink="/dashboard" routerLinkActive="text-white" class="px-4 py-3 text-slate-400">Dashboard</a>
+    <a routerLink="/profile" routerLinkActive="text-white" class="px-4 py-3 text-slate-400">Profile</a>
+  </div>
+</nav>

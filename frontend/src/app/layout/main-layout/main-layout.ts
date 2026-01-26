@@ -1,9 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { HeaderComponent } from "../header/header";
 import { FooterComponent } from "../footer/footer";
 import { SidebarComponent } from "../sidebar/sidebar";
-import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatSidenav, MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -16,9 +16,10 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./main-layout.scss']
 })
 export class MainLayoutComponent {
-  isSidebarOpen = false;
+  @ViewChild('sidenav') sidenav!: MatSidenav;
 
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
+  onMenuToggle() {
+    console.log('toggling sidenav');
+    this.sidenav.toggle();
   }
 }

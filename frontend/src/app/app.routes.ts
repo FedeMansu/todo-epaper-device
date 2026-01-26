@@ -10,6 +10,10 @@ export const routes: Routes = [{
         loadComponent: () => import("./features/dashboard/dashboard")
           .then(m => m.Dashboard)
       },
-      // altre rotte...
+      {
+        path: 'profile',
+        loadComponent: () => import("./core/components/profile/profile.component")
+          .then(m => m.ProfileComponent)
+      },
     ]
   }];

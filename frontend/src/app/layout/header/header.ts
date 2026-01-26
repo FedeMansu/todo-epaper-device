@@ -1,5 +1,5 @@
 // header.component.ts
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -8,13 +8,12 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './header.html',
-  styleUrls: ['./header.scss']
+  styleUrls: ['./header.scss'],
 })
 export class HeaderComponent {
-  @Output() menuToggle = new EventEmitter<void>();
-  @Output() toggleSidebar = new EventEmitter<void>();
+  public isSidebarOpen: boolean = false;
 
   onMenuClick() {
-    this.menuToggle.emit();
+    this.isSidebarOpen = !this.isSidebarOpen;
   }
 }
