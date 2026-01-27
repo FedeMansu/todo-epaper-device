@@ -1,1 +1,67 @@
-<p>todo-form-component works!</p>
+<form [formGroup]="todoForm" (ngSubmit)="onSubmit()" class="w-[70vh] h-[35vw] p-6 bg-white rounded-lg shadow">
+        <h2 class="text-2xl font-bold mb-6">{{ isEditMode ? 'Modifica' : 'Nuovo' }} Todo</h2>
+        
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2">Titolo *</label>
+          <input 
+            type="text" 
+            formControlName="title"
+            class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="todoForm.get('title')?.invalid && todoForm.get('title')?.touched"
+          />
+          <span *ngIf="todoForm.get('title')?.invalid && todoForm.get('title')?.touched" 
+                class="text-red-500 text-sm">
+            Il titolo è obbligatorio
+          </span>
+        </div>
+  
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2">Descrizione</label>
+          <textarea 
+            formControlName="description"
+            rows="3"
+            class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          ></textarea>
+        </div>
+  
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2">Priorità</label>
+          <select 
+            formControlName="priority"
+            class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Seleziona priorità</option>
+            <option value="low">Bassa</option>
+            <option value="medium">Media</option>
+            <option value="high">Alta</option>
+          </select>
+        </div>
+  
+        <div class="mb-6">
+          <label class="flex items-center">
+            <input 
+              type="checkbox" 
+              formControlName="completed"
+              class="mr-2 h-4 w-4"
+            />
+            <span class="text-sm font-medium">Completato</span>
+          </label>
+        </div>
+  
+        <div class="flex gap-2">
+          <button 
+            type="submit"
+            [disabled]="todoForm.invalid"
+            class="flex-1 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            {{ isEditMode ? 'Aggiorna' : 'Crea' }}
+          </button>
+          <button 
+            type="button"
+            (click)="onClose()"
+            class="flex-1 bg-gray-200 text-gray-700 py-2 rounded hover:bg-gray-300"
+          >
+            Reset
+          </button>
+        </div>
+      </form>

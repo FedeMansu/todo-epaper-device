@@ -52,9 +52,8 @@ export class Dashboard {
   }
 
   createTodo(): void {
-    this.dialog.open(TodoFormComponent, {}).afterClosed().subscribe((result) => {
-      if (result) {
-        const newTodo: Todo = { id: 1, title: result.title };
+    this.dialog.open(TodoFormComponent, {}).afterClosed().subscribe((newTodo) => {
+      if (newTodo) {
         this.service.createTodo(newTodo).subscribe({
           next: (todo: Todo) => {
             this.todos.update((current) => [...current, todo]);
