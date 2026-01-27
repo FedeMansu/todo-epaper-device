@@ -1,19 +1,22 @@
 import { TodoModel } from '../models/todoModel.js';
 
 export const todoController = {
-    // GET /api/todos
-    async getAllTodos(req, res) {  // ✅ Aggiungi async
-      try {
-        const todos = await TodoModel.findAll();  // ✅ Aggiungi await
-        console.log('Todos trovati:', todos);  // ✅ Debug log
-        res.json(todos);
-      } catch (error) {
-        console.error('Errore nel recupero dei todos:', error);
-        res.status(500).json({ 
-          error: 'Errore nel recupero dei todos' 
-        });
-      }
-    },
+  // GET /api/todos
+  getAllTodos(req, res) {
+    try {
+      const todos = TodoModel.findAll();
+      res.json({
+        success: true,
+        data: todos
+      });
+    } catch (error) {
+      console.error('Errore nel recupero dei todos:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Errore nel recupero dei todos'
+      });
+    }
+  },
 
   // GET /api/todos/:id
   getTodoById(req, res) {
@@ -55,13 +58,16 @@ export const todoController = {
 
       const todo = TodoModel.create({ title, description, priority });
       
-      res.status(201).json(
-         todo
-      );
+      res.status(201).json({
+        success: true,
+        data: todo
+      });
     } catch (error) {
       console.error('Errore nella creazione del todo:', error);
-      res.status(500).json( 'Errore nella creazione del todo'
-      );
+      res.status(500).json({
+        success: false,
+        error: 'Errore nella creazione del todo'
+      });
     }
   },
 
