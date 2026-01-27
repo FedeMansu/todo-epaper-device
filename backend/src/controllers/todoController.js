@@ -55,16 +55,13 @@ export const todoController = {
 
       const todo = TodoModel.create({ title, description, priority });
       
-      res.status(201).json({
-        success: true,
-        data: todo
-      });
+      res.status(201).json(
+         todo
+      );
     } catch (error) {
       console.error('Errore nella creazione del todo:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Errore nella creazione del todo'
-      });
+      res.status(500).json( 'Errore nella creazione del todo'
+      );
     }
   },
 
