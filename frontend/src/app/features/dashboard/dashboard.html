@@ -58,13 +58,13 @@
         </td>
         <td role="cell" class="date-cell">
           <time [attr.datetime]="todo.created_at">
-            {{ formatDate(todo.created_at!) }}
+            {{ todo.created_at ? (todo.created_at | date:'dd/MM/yyyy HH:mm') : 'N/A' }}
           </time>
         </td>
         <td role="cell" class="actions-cell">
           <button
             class="btn-edit"
-            (click)="editTodo(todo)"
+            (click)="createTodo(todo)"
             [attr.aria-label]="'Edit todo: ' + todo.title"
           >
             Edit

@@ -4,10 +4,11 @@ import { formatDate, isCompleted, Todo, todoResponse } from '../../dtos/todo.dto
 import { FormsModule } from '@angular/forms';
 import { TodoFormComponent } from '../../shared/components/todo-form/todo-form-component';
 import { MatDialog } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -50,17 +51,27 @@ export class Dashboard {
     }
   }
 
-  createTodo(): void {
+  createTodo(todo?: Todo): void {
     this.dialog
-      .open(TodoFormComponent, {})
+      .open(TodoFormComponent, { data: todo })
       .afterClosed()
       .subscribe((newTodo) => {
-        if (newTodo) {
+        console.log('Dialog result:', newTodo);
+        if (newTodo.operation === 'create') {
           this.service.createTodo(newTodo).subscribe({
             next: (todo: Todo) => {
               this.todos.update((current) => ({
                 ...current,
                 data: [...current.data, todo],
+              }));
+            },
+          });
+        } else if (newTodo.operation === 'update') {
+          this.service.updateTodo(newTodo.data).subscribe({
+            next: (updatedTodo) => {
+              this.todos.update((response) => ({
+                ...response,
+                data: response.data.map((t) => (t.id === updatedTodo.id ? updatedTodo : t)),
               }));
             },
           });
@@ -71,7 +82,7 @@ export class Dashboard {
   toggleComplete(todo: Todo) {
     const newCompleted = todo.completed === 1 ? 0 : 1;
 
-    this.service.createTodo(todo).subscribe({
+    this.service.toggleTodo(todo).subscribe({
       next: (updatedTodo) => {
         this.todos.update((response) => ({
           ...response,
@@ -83,12 +94,6 @@ export class Dashboard {
         console.error('Error:', err);
       },
     });
-  }
-
-  editTodo(todo: Todo) {
-    // Implementa la logica di edit
-    console.log('Edit todo:', todo);
-    // Puoi aprire un modal o navigare a una pagina di edit
   }
 
   deleteTodo(todo: Todo) {

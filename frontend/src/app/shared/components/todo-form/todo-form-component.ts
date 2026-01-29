@@ -1,5 +1,5 @@
-import { Component, Input, Output } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, Input, OnInit, Output } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogContainer } from '@angular/material/dialog';
 import { Todo } from '../../../dtos/todo.dto';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,23 +7,40 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-todo-form-component',
-  imports: [MatDialogContainer, CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './todo-form-component.html',
   styleUrl: './todo-form-component.scss',
 })
-export class TodoFormComponent {
-  @Input() todo: Todo | null = null;
-
+export class TodoFormComponent implements OnInit {
   todoForm: FormGroup;
-  isEditMode = false;
+  isEditMode: boolean = false;
+  isUpdaeMode: boolean = false;
 
-  constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<TodoFormComponent>) {
+  constructor(
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<TodoFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public todo: Todo | null
+  ) {
     this.todoForm = this.fb.group({
       title: ['', Validators.required],
       description: [''],
       priority: [''],
+      id: [0],
       completed: [false],
     });
+  }
+
+  ngOnInit() {
+    if (this.todo) {
+      this.isUpdaeMode = true;
+      this.todoForm.patchValue({
+        title: this.todo.title,
+        description: this.todo.description,
+        completed: this.todo.completed,
+        id: this.todo.id,
+        priority: this.todo.priority,
+      });
+    }
   }
 
   onSubmit() {
@@ -33,9 +50,13 @@ export class TodoFormComponent {
         title: formValue.title,
         description: formValue.description || null,
         priority: formValue.priority || undefined,
+        id: formValue.id,
         completed: formValue.completed ? 1 : 0,
       };
-      this.dialogRef.close(todo);
+      const data = this.isUpdaeMode
+        ? { operation: 'update', data: todo }
+        : { operation: 'insert', data: todo };
+      this.dialogRef.close(data);
     }
   }
 
