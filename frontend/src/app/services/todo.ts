@@ -22,8 +22,8 @@ export class TodoService {
     return this.http.put<Todo>(`${environment.apiUrl}/todos/${todo.id}`, todo);
   }
 
-  public toggleTodo(todo: Partial<Todo>): Observable<Todo> {
-    return this.http.patch<Todo>(`${environment.apiUrl}/todos/${todo.id}/toggle`, {});
+  public toggleTodo(todo: Partial<Todo>): Observable<todoResponse> {
+    return this.http.patch<todoResponse>(`${environment.apiUrl}/todos/${todo.id}/toggle`, {});
   }
 
   public deleteTodo(todo: Partial<Todo>): Observable<Todo> {

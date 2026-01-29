@@ -1,89 +1,164 @@
-<div class="table-container">
-  <div class="table-header">
-    <h2>My Todos</h2>
-    <button class="btn-primary" (click)="createTodo()" aria-label="Refresh todos">Add Todo</button>
+<div class="max-w-7xl mx-auto p-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-semibold text-gray-900">My Todos</h2>
+    <button
+      class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+      (click)="createTodo()"
+      aria-label="Add new todo"
+    >
+      Add Todo
+    </button>
   </div>
 
-  <table role="table" aria-label="Todo list table" class="todo-table">
-    <thead role="rowgroup">
-      <tr role="row">
-        <th role="columnheader" scope="col">ID</th>
-        <th role="columnheader" scope="col">Title</th>
-        <th role="columnheader" scope="col">Description</th>
-        <th role="columnheader" scope="col">Priority</th>
-        <th role="columnheader" scope="col">Status</th>
-        <th role="columnheader" scope="col">Created</th>
-        <th role="columnheader" scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody role="rowgroup">
-      @if (todos().data.length === 0) {
-      <tr role="row">
-        <td colspan="7" class="empty-state">No todos found. Create your first todo!</td>
-      </tr>
-      } @for (todo of todos().data; track todo.id) {
-      <tr
-        role="row"
-        [class.completed]="isCompleted(todo)"
-        [attr.aria-label]="'Todo: ' + todo.title"
-      >
-        <td role="cell">{{ todo.id }}</td>
-        <td role="cell" class="title-cell">
-          <strong>{{ todo.title }}</strong>
-        </td>
-        <td role="cell" class="description-cell">
-          {{ todo.description || '-' }}
-        </td>
-        <td role="cell">
-          <span
-            class="priority-badge"
-            [class.priority-low]="todo.priority === 'low'"
-            [class.priority-medium]="todo.priority === 'medium'"
-            [class.priority-high]="todo.priority === 'high'"
-            [attr.aria-label]="'Priority: ' + todo.priority"
+  <!-- Table -->
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <table role="table" aria-label="Todo list table" class="min-w-full divide-y divide-gray-200">
+      <thead role="rowgroup" class="bg-gray-50">
+        <tr role="row">
+          <th
+            role="columnheader"
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            {{ todo.priority }}
-          </span>
-        </td>
-        <td role="cell">
-          <button
-            class="status-btn"
-            [class.completed]="isCompleted(todo)"
-            (click)="toggleComplete(todo)"
-            [attr.aria-label]="isCompleted(todo) ? 'Mark as incomplete' : 'Mark as complete'"
-            [attr.aria-pressed]="isCompleted(todo)"
+            ID
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            {{ isCompleted(todo) ? '✓ Completed' : '○ Pending' }}
-          </button>
-        </td>
-        <td role="cell" class="date-cell">
-          <time [attr.datetime]="todo.created_at">
-            {{ todo.created_at ? (todo.created_at | date:'dd/MM/yyyy HH:mm') : 'N/A' }}
-          </time>
-        </td>
-        <td role="cell" class="actions-cell">
-          <button
-            class="btn-edit"
-            (click)="createTodo(todo)"
-            [attr.aria-label]="'Edit todo: ' + todo.title"
+            Title
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            Edit
-          </button>
-          <button
-            class="btn-delete"
-            (click)="deleteTodo(todo)"
-            [attr.aria-label]="'Delete todo: ' + todo.title"
+            Description
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            Delete
-          </button>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
+            Priority
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Status
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Created
+          </th>
+          <th
+            role="columnheader"
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="bg-white divide-y divide-gray-200">
+        @if (todos().data.length === 0) {
+        <tr role="row">
+          <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+            No todos found. Create your first todo!
+          </td>
+        </tr>
+        } @for (todo of todos().data; track todo.id) {
+        <tr
+          role="row"
+          [class.opacity-60]="isCompleted(todo)"
+          [attr.aria-label]="'Todo: ' + todo.title"
+          class="hover:bg-gray-50 transition-colors"
+        >
+          <td role="cell" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ todo.id }}
+          </td>
+          <td role="cell" class="px-6 py-4 whitespace-nowrap">
+            <span
+              class="text-sm font-medium text-gray-900"
+              [class.line-through]="isCompleted(todo)"
+            >
+              {{ todo.title }}
+            </span>
+          </td>
+          <td role="cell" class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+            {{ todo.description || '-' }}
+          </td>
+          <td role="cell" class="px-6 py-4 whitespace-nowrap">
+            <span
+              class="px-2 py-1 text-xs font-medium rounded-full"
+              [class.bg-green-100]="todo.priority === 'low'"
+              [class.text-green-800]="todo.priority === 'low'"
+              [class.bg-yellow-100]="todo.priority === 'medium'"
+              [class.text-yellow-800]="todo.priority === 'medium'"
+              [class.bg-red-100]="todo.priority === 'high'"
+              [class.text-red-800]="todo.priority === 'high'"
+              [attr.aria-label]="'Priority: ' + todo.priority"
+            >
+              {{ todo.priority }}
+            </span>
+          </td>
+          <td role="cell" class="px-6 py-4 whitespace-nowrap">
+            <button
+              class="px-3 py-1 text-sm font-medium rounded-md transition-colors"
+              [class.bg-green-100]="isCompleted(todo)"
+              [class.text-green-800]="isCompleted(todo)"
+              [class.bg-gray-100]="!isCompleted(todo)"
+              [class.text-gray-700]="!isCompleted(todo)"
+              [class.hover:bg-green-200]="isCompleted(todo)"
+              [class.hover:bg-gray-200]="!isCompleted(todo)"
+              (click)="toggleComplete(todo)"
+              [attr.aria-label]="isCompleted(todo) ? 'Mark as incomplete' : 'Mark as complete'"
+              [attr.aria-pressed]="isCompleted(todo)"
+            >
+              {{ isCompleted(todo) ? '✓ Completed' : '○ Pending' }}
+            </button>
+          </td>
+          <td role="cell" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            <time [attr.datetime]="todo.created_at">
+              {{ todo.created_at ? (todo.created_at | date : 'dd/MM/yyyy HH:mm') : 'N/A' }}
+            </time>
+          </td>
+          <td role="cell" class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+            <button
+              class="text-blue-600 hover:text-blue-800 font-medium transition-colors"
+              (click)="createTodo(todo)"
+              [attr.aria-label]="'Edit todo: ' + todo.title"
+            >
+              Edit
+            </button>
+            <button
+              class="text-red-600 hover:text-red-800 font-medium transition-colors"
+              (click)="deleteTodo(todo)"
+              [attr.aria-label]="'Delete todo: ' + todo.title"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 
+  <!-- Error -->
   @if (error()) {
-  <div class="error" role="alert" aria-live="assertive">
+  <div
+    class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800"
+    role="alert"
+    aria-live="assertive"
+  >
     {{ error() }}
   </div>
   }

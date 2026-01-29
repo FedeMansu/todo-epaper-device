@@ -13,25 +13,23 @@ import { DatePipe } from '@angular/common';
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
-  todos = signal<todoResponse>({ success: false, data: [] });
-  loading = signal(false);
+  public todos = signal<todoResponse>({ success: false, data: [] });
+  public loading = signal(false);
 
-  sortAscending: boolean = true;
-  tempInput: string = '';
-  error = signal<string>('');
+  public sortAscending: boolean = true;
+  public error = signal<string>('');
 
   constructor(private readonly service: TodoService, private readonly dialog: MatDialog) {}
 
   public ngOnInit(): void {
-    this.getData();
+    this._getData();
   }
 
-  public getData(): void {
+  private _getData(): void {
     this.loading.set(true);
 
     this.service.getTodos().subscribe({
       next: (data: todoResponse) => {
-        console.log('Dati ricevuti:', data);
         this.todos.set(data);
         this.loading.set(false);
       },
@@ -51,13 +49,12 @@ export class Dashboard {
     }
   }
 
-  createTodo(todo?: Todo): void {
+  public createTodo(todo?: Todo): void {
     this.dialog
       .open(TodoFormComponent, { data: todo })
       .afterClosed()
       .subscribe((newTodo) => {
-        console.log('Dialog result:', newTodo);
-        if (newTodo.operation === 'create') {
+        if (newTodo?.operation === 'create') {
           this.service.createTodo(newTodo).subscribe({
             next: (todo: Todo) => {
               this.todos.update((current) => ({
@@ -66,7 +63,7 @@ export class Dashboard {
               }));
             },
           });
-        } else if (newTodo.operation === 'update') {
+        } else if (newTodo?.operation === 'update') {
           this.service.updateTodo(newTodo.data).subscribe({
             next: (updatedTodo) => {
               this.todos.update((response) => ({
@@ -79,15 +76,18 @@ export class Dashboard {
       });
   }
 
-  toggleComplete(todo: Todo) {
-    const newCompleted = todo.completed === 1 ? 0 : 1;
-
+  public toggleComplete(todo: Todo) {
     this.service.toggleTodo(todo).subscribe({
-      next: (updatedTodo) => {
-        this.todos.update((response) => ({
-          ...response,
-          data: response.data.map((t) => (t.id === todo.id ? updatedTodo : t)),
+      next: (response) => {
+        //TODO: Verificare il tipo di response
+      
+        this.todos.update((currentState) => ({
+          ...currentState,
+          data: currentState.data.map((t) => 
+            t.id === todo.id ? response.data : t
+          ),
         }));
+        console.log('Todo status updated successfully.' ,this.todos());
       },
       error: (err) => {
         this.error.set('Failed to update todo status.');
