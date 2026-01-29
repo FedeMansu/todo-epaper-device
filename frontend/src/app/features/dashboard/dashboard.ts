@@ -1,23 +1,22 @@
 import { Component, computed, signal } from '@angular/core';
 import { TodoService } from '../../services/todo';
-import { formatDate, isCompleted, Todo } from '../../dtos/todo.dto';
+import { formatDate, isCompleted, Todo, todoResponse } from '../../dtos/todo.dto';
 import { FormsModule } from '@angular/forms';
 import { TodoFormComponent } from '../../shared/components/todo-form/todo-form-component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ FormsModule],
+  imports: [FormsModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
-  todos = signal<Todo[]>([]);
+  todos = signal<todoResponse>({ success: false, data: [] });
   loading = signal(false);
 
   sortAscending: boolean = true;
   tempInput: string = '';
-  isLoading = signal<boolean>(false);
   error = signal<string>('');
 
   constructor(private readonly service: TodoService, private readonly dialog: MatDialog) {}
@@ -30,7 +29,7 @@ export class Dashboard {
     this.loading.set(true);
 
     this.service.getTodos().subscribe({
-      next: (data: Todo[]) => {
+      next: (data: todoResponse) => {
         console.log('Dati ricevuti:', data);
         this.todos.set(data);
         this.loading.set(false);
@@ -45,62 +44,66 @@ export class Dashboard {
   sortTaskById(): void {
     this.sortAscending = !this.sortAscending;
     if (this.sortAscending) {
-      this.todos.update((tasks) => tasks.sort((a, b) => a.id - b.id));
+      this.todos.update((tasks) => ({ ...tasks, data: tasks.data.sort((a, b) => a.id - b.id) }));
     } else {
-      this.todos.update((tasks) => tasks.sort((a, b) => b.id - a.id));
+      this.todos.update((tasks) => ({ ...tasks, data: tasks.data.sort((a, b) => b.id - a.id) }));
     }
   }
 
   createTodo(): void {
-    this.dialog.open(TodoFormComponent, {}).afterClosed().subscribe((newTodo) => {
-      if (newTodo) {
-        this.service.createTodo(newTodo).subscribe({
-          next: (todo: Todo) => {
-            this.todos.update((current) => [...current, todo]);
-          },
-        });
-      }
-    });
+    this.dialog
+      .open(TodoFormComponent, {})
+      .afterClosed()
+      .subscribe((newTodo) => {
+        if (newTodo) {
+          this.service.createTodo(newTodo).subscribe({
+            next: (todo: Todo) => {
+              this.todos.update((current) => ({
+                ...current,
+                data: [...current.data, todo],
+              }));
+            },
+          });
+        }
+      });
   }
 
-
-
- 
   toggleComplete(todo: Todo) {
     const newCompleted = todo.completed === 1 ? 0 : 1;
-    
+
     this.service.createTodo(todo).subscribe({
       next: (updatedTodo) => {
-        this.todos.update(todos =>
-          todos.map(t => t.id === todo.id ? updatedTodo : t)
-        );
+        this.todos.update((response) => ({
+          ...response,
+          data: response.data.map((t) => (t.id === todo.id ? updatedTodo : t)),
+        }));
       },
       error: (err) => {
         this.error.set('Failed to update todo status.');
         console.error('Error:', err);
-      }
+      },
     });
   }
 
-  
   editTodo(todo: Todo) {
     // Implementa la logica di edit
     console.log('Edit todo:', todo);
     // Puoi aprire un modal o navigare a una pagina di edit
   }
-  
-  
 
   deleteTodo(todo: Todo) {
     if (confirm(`Are you sure you want to delete "${todo.title}"?`)) {
       this.service.deleteTodo(todo).subscribe({
         next: () => {
-          this.todos.update(todos => todos.filter(t => t.id !== todo.id));
+          this.todos.update((response) => ({
+            ...response,
+            data: response.data.filter((t) => t.id !== todo.id),
+          }));
         },
         error: (err: any) => {
           this.error.set('Failed to delete todo.');
           console.error('Error:', err);
-        }
+        },
       });
     }
   }

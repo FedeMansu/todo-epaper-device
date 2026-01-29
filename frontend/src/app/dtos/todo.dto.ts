@@ -1,3 +1,7 @@
+export interface todoResponse {
+  success: boolean;
+  data: Todo[];
+}
 /**
  * Interfaccia per un singolo Todo
  */
@@ -46,6 +50,6 @@ export function formatDate(dateString: string): string {
     month: '2-digit',
     year: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   });
 }

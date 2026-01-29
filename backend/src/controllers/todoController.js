@@ -1,4 +1,4 @@
-import { TodoModel } from '../models/todoModel.js';
+import { TodoModel } from "../models/todoModel.js";
 
 export const todoController = {
   // GET /api/todos
@@ -7,13 +7,13 @@ export const todoController = {
       const todos = TodoModel.findAll();
       res.json({
         success: true,
-        data: todos
+        data: todos,
       });
     } catch (error) {
-      console.error('Errore nel recupero dei todos:', error);
+      console.error("Errore nel recupero dei todos:", error);
       res.status(500).json({
         success: false,
-        error: 'Errore nel recupero dei todos'
+        error: "Errore nel recupero dei todos",
       });
     }
   },
@@ -27,19 +27,19 @@ export const todoController = {
       if (!todo) {
         return res.status(404).json({
           success: false,
-          error: 'Todo non trovato'
+          error: "Todo non trovato",
         });
       }
 
       res.json({
         success: true,
-        data: todo
+        data: todo,
       });
     } catch (error) {
-      console.error('Errore nel recupero del todo:', error);
+      console.error("Errore nel recupero del todo:", error);
       res.status(500).json({
         success: false,
-        error: 'Errore nel recupero del todo'
+        error: "Errore nel recupero del todo",
       });
     }
   },
@@ -49,24 +49,24 @@ export const todoController = {
     try {
       const { title, description, priority } = req.body;
 
-      if (!title || title.trim() === '') {
+      if (!title || title.trim() === "") {
         return res.status(400).json({
           success: false,
-          error: 'Il titolo è obbligatorio'
+          error: "Il titolo è obbligatorio",
         });
       }
 
       const todo = TodoModel.create({ title, description, priority });
-      
+
       res.status(201).json({
         success: true,
-        data: todo
+        data: todo,
       });
     } catch (error) {
-      console.error('Errore nella creazione del todo:', error);
+      console.error("Errore nella creazione del todo:", error);
       res.status(500).json({
         success: false,
-        error: 'Errore nella creazione del todo'
+        error: "Errore nella creazione del todo",
       });
     }
   },
@@ -81,25 +81,25 @@ export const todoController = {
         title,
         description,
         completed,
-        priority
+        priority,
       });
 
       if (!todo) {
         return res.status(404).json({
           success: false,
-          error: 'Todo non trovato'
+          error: "Todo non trovato",
         });
       }
 
       res.json({
         success: true,
-        data: todo
+        data: todo,
       });
     } catch (error) {
-      console.error('Errore nell\'aggiornamento del todo:', error);
+      console.error("Errore nell'aggiornamento del todo:", error);
       res.status(500).json({
         success: false,
-        error: 'Errore nell\'aggiornamento del todo'
+        error: "Errore nell'aggiornamento del todo",
       });
     }
   },
@@ -113,19 +113,19 @@ export const todoController = {
       if (!success) {
         return res.status(404).json({
           success: false,
-          error: 'Todo non trovato'
+          error: "Todo non trovato",
         });
       }
 
       res.json({
         success: true,
-        message: 'Todo eliminato con successo'
+        message: "Todo eliminato con successo",
       });
     } catch (error) {
-      console.error('Errore nell\'eliminazione del todo:', error);
+      console.error("Errore nell'eliminazione del todo:", error);
       res.status(500).json({
         success: false,
-        error: 'Errore nell\'eliminazione del todo'
+        error: "Errore nell'eliminazione del todo",
       });
     }
   },
@@ -139,20 +139,20 @@ export const todoController = {
       if (!todo) {
         return res.status(404).json({
           success: false,
-          error: 'Todo non trovato'
+          error: "Todo non trovato",
         });
       }
 
       res.json({
         success: true,
-        data: todo
+        data: todo,
       });
     } catch (error) {
-      console.error('Errore nel toggle del todo:', error);
+      console.error("Errore nel toggle del todo:", error);
       res.status(500).json({
         success: false,
-        error: 'Errore nel toggle del todo'
+        error: "Errore nel toggle del todo",
       });
     }
-  }
+  },
 };

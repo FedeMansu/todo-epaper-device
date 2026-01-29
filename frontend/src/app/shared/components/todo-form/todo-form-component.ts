@@ -1,15 +1,13 @@
 import { Component, Input, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { MatDialogContainer } from "@angular/material/dialog";
+import { MatDialogContainer } from '@angular/material/dialog';
 import { Todo } from '../../../dtos/todo.dto';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-todo-form-component',
-  imports: [MatDialogContainer,CommonModule,
-
-    ReactiveFormsModule],
+  imports: [MatDialogContainer, CommonModule, ReactiveFormsModule],
   templateUrl: './todo-form-component.html',
   styleUrl: './todo-form-component.scss',
 })
@@ -24,7 +22,7 @@ export class TodoFormComponent {
       title: ['', Validators.required],
       description: [''],
       priority: [''],
-      completed: [false]
+      completed: [false],
     });
   }
 
@@ -35,9 +33,9 @@ export class TodoFormComponent {
         title: formValue.title,
         description: formValue.description || null,
         priority: formValue.priority || undefined,
-        completed: formValue.completed ? 1 : 0
+        completed: formValue.completed ? 1 : 0,
       };
-    this.dialogRef.close(todo);
+      this.dialogRef.close(todo);
     }
   }
 
@@ -47,11 +45,11 @@ export class TodoFormComponent {
       title: todo.title,
       description: todo.description,
       priority: todo.priority,
-      completed: todo.completed === 1
+      completed: todo.completed === 1,
     });
   }
 
-  public onClose(): void {  
+  public onClose(): void {
     this.dialogRef.close();
   }
 }

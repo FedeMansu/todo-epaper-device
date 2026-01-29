@@ -17,11 +17,11 @@
       </tr>
     </thead>
     <tbody role="rowgroup">
-      @if (todos().length === 0) {
+      @if (todos().data.length === 0) {
       <tr role="row">
         <td colspan="7" class="empty-state">No todos found. Create your first todo!</td>
       </tr>
-      } @for (todo of todos(); track todo.id) {
+      } @for (todo of todos().data; track todo.id) {
       <tr
         role="row"
         [class.completed]="isCompleted(todo)"
@@ -82,9 +82,7 @@
     </tbody>
   </table>
 
-  @if (isLoading()) {
-  <div class="loading" role="status" aria-live="polite">Loading todos...</div>
-  } @if (error()) {
+  @if (error()) {
   <div class="error" role="alert" aria-live="assertive">
     {{ error() }}
   </div>

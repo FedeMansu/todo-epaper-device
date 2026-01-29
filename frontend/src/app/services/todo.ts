@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Todo } from '../dtos/todo.dto';
+import { Todo, todoResponse } from '../dtos/todo.dto';
 import { environment } from '../../environments/env';
 
 @Injectable({
@@ -10,8 +10,8 @@ import { environment } from '../../environments/env';
 export class TodoService {
   private http = inject(HttpClient);
 
-  public getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(environment.apiUrl.concat('/todos'));
+  public getTodos(): Observable<todoResponse> {
+    return this.http.get<todoResponse>(environment.apiUrl.concat('/todos'));
   }
 
   public createTodo(todo: Partial<Todo>): Observable<Todo> {
@@ -19,6 +19,6 @@ export class TodoService {
   }
 
   public deleteTodo(todo: Partial<Todo>): Observable<Todo> {
-    return this.http.post<Todo>(environment.apiUrl.concat('/todos'), todo);
+    return this.http.delete<Todo>(`${environment.apiUrl}/todos/${todo.id}`);
   }
 }
